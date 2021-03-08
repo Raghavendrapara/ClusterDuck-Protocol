@@ -8,6 +8,26 @@ Duck::Duck(String name) {
   duckName = name;
 }
 
+void Duck::setEncrypt(bool state) {
+  duckcrypto::setEncrypt(state);
+}
+
+void Duck::setAESKey(uint8_t newKEY[32]) {
+  duckcrypto::setAESKey(newKEY);
+}
+
+void Duck::setAESIv(uint8_t newIV[16]) {
+  duckcrypto::setAESIV(newIV);
+}
+
+void Duck::encrypt(uint8_t* text, uint8_t* encryptedData, size_t inc) {
+  duckcrypto::encryptData(text, encryptedData, inc);
+}
+
+void Duck::decrypt(uint8_t* encryptedData, uint8_t* text, size_t inc) {
+  duckcrypto::decryptData(encryptedData, text, inc);
+}
+
 int Duck::setDeviceId(std::vector<byte> id) {
   if (id.size() != DUID_LENGTH) {
     logerr("ERROR  device id too long rc = " + String(DUCK_ERR_NONE));
@@ -89,6 +109,10 @@ int Duck::setupRadio(float band, int ss, int rst, int di0, int di1,
   loginfo("setupRadio rc = " + String(DUCK_ERR_NONE));
 
   return DUCK_ERR_NONE;
+}
+
+void Duck::setSyncWord(byte syncWord) {
+  duckRadio->setSyncWord(syncWord);
 }
 
 int Duck::setupWebServer(bool createCaptivePortal, String html) {
